@@ -7,3 +7,24 @@ project-jillian-kenny-vahan created by GitHub Classroom
 - Interface: drawings of each screen
 - Classes: design of all classes and objects
 - Libraries you will use
+
+
+Description: Like Super Mario Bros
+Click right arrow, he moves to the right (forward)
+Click left arrow, he moves to the left (back)
+Press spacebar, he jumps up
+    Extensions:
+    if his head hits the coin, you get a point
+    Levels of diccifulty
+    Multiple charicters
+Schedule: 
+Wednesday November 16: Topic Proposal due
+Monday November 21: Charicter Design done
+Thursday November 24: Level Design done
+Monday December 1: ability to jump, move left, right done
+Interface:
+Classes:
+    Character
+Libraries:
+    pygame
+
