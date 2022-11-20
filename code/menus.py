@@ -7,7 +7,8 @@ class StartMenu:
     def __init__(self, toggle_menu):
         self.toggle_menu = toggle_menu
         self.display_surface = pygame.display.get_surface()
-        self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
+        self.font = pygame.font.Font('../font/FutilePro.ttf', 30)
+        self.bg = pygame.image.load('../graphics/background/background.png').convert_alpha()
         self.width = 400
         self.space = 10
         self.padding = 8
@@ -19,7 +20,7 @@ class StartMenu:
     def setup(self):
         self.text_surfs = []
         self.total_height = 0
-        
+
         for item in self.options:
             text_surf = self.font.render(item, False, 'Black')
             self.text_surfs.append(text_surf)
@@ -62,6 +63,7 @@ class StartMenu:
 
     def update(self):
         self.input()
+        self.display_surface.blit(self.bg, (0,0))
         for text_index, text_surf in enumerate(self.text_surfs):
             top = self.main_rect.top + text_index * (text_surf.get_height() + (self.padding * 2) + self.space)
             self.show_entry(text_surf, top, self.index == text_index)

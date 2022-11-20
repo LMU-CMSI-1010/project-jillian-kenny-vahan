@@ -1,32 +1,44 @@
 import pygame, sys
 from settings import *
 from menus import StartMenu
-
+from level import Level
 class Game:
     def __init__(self):
-        pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.start_menu = StartMenu(self.toggle_start_menu)
-        self.start_menu_active = True
-        self.bg = pygame.image.load('../graphics/background/background.png').convert_alpha()
-        pygame.display.set_caption('Final Project')
-        self.clock = pygame.time.Clock()
-
+        self.status = 'mainmenu'
+        self.level = None
     def run(self):
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-            dt = self.clock.tick() / 1000
-            if self.start_menu_active:
-                pygame.display.get_surface().blit(self.bg, (0, 0))
-                self.start_menu.update()
-            pygame.display.update()
+        if self.status == 'mainmenu':
+            self.start_menu.update()
+        else:   
+            if self.level:
+                self.level.run()
+            else:
+                self.create_level(1)
 
     def toggle_start_menu(self):
-        self.start_menu_active = not self.start_menu_active
+        self.status = 'level'
 
-if __name__ == '__main__':
-    game = Game()
+    def create_level(self, current_level):
+        self.level = Level(current_level,screen)
+        self.status = 'level'
+
+
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption('Final Project')
+clock = pygame.time.Clock()
+game = Game()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    screen.fill('grey')
     game.run()
+    pygame.display.update()
+    clock.tick(60)
+
+# if __name__ == '__main__':
+#     game = Game()
+#     game.run()
