@@ -8,8 +8,11 @@ def import_folder(path):
 
     for _, __, image_files in walk(path):
         for image in image_files:
+            if image == '.DS_Store':
+                #print('Found .DS_Store, skipping...')
+                continue
             full_path = path + '/' + image
-            print(f'importing {full_path}')
+            #print(f'importing {full_path}')
             image_surf = pygame.image.load(full_path).convert_alpha()
             if 'character' in full_path:
                 width = image_surf.get_rect().width

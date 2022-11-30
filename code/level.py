@@ -1,26 +1,33 @@
 import pygame
 from support import import_csv_layout, import_cut_graphics
 from settings import TILE_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
-from tiles import Tile, StaticTile
+from tiles import StaticTile
 from player import Player
+from decoration import Sky, Clouds, Lava
 from game_data import levels
 
 class Level:
-    def __init__(self, current_level, surface):
+    def __init__(self, current_level, surface, create_level, change_lives):
         self.display_surface = surface
         self.world_shift = 0
         self.current_x = None
+        self.create_level = create_level
         self.player_on_ground = False
         self.current_level = current_level
+        self.change_lives = change_lives
         level_data = levels[self.current_level]
         player_layout = import_csv_layout(level_data['player'])
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout)
-
         terrain_layout = import_csv_layout(level_data['terrain'])
         self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')
-
+        
+        # Decorations
+        self.sky = Sky(8)
+        level_width = len(terrain_layout[0]) * TILE_SIZE
+        self.clouds = Clouds(400, level_width, 30)
+        self.lava = Lava(SCREEN_HEIGHT - 20, level_width)
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
 
@@ -85,6 +92,12 @@ class Level:
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
     
+    def check_death(self):
+        if self.player.sprite.rect.top > SCREEN_HEIGHT:
+            self.change_lives()
+            self.create_level(1)
+
+
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
@@ -111,6 +124,8 @@ class Level:
             print('You win')
     
     def run(self):
+        self.sky.draw(self.display_surface)
+        self.clouds.draw(self.display_surface, self.world_shift)
         self.terrain_sprites.update(self.world_shift)
         self.terrain_sprites.draw(self.display_surface)
         self.player.update()
@@ -121,4 +136,6 @@ class Level:
         self.player.draw(self.display_surface)
         self.goal.update(self.world_shift)
         self.goal.draw(self.display_surface)
+        self.check_death()
         self.check_win()
+        self.lava.draw(self.display_surface, self.world_shift)
