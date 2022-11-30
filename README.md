@@ -1,7 +1,7 @@
+
 # project-jillian-kenny-vahan
 project-jillian-kenny-vahan created by GitHub Classroom
 **Due: Wednesday 5pm**
-
 - Description: minimum functionality + extensions
 - Schedule: timeline with milestones for each week
 - Interface: drawings of each screen
@@ -9,22 +9,40 @@ project-jillian-kenny-vahan created by GitHub Classroom
 - Libraries you will use
 
 
-Description: Like Super Mario Bros
-Click right arrow, he moves to the right (forward)
-Click left arrow, he moves to the left (back)
-Press spacebar, he jumps up
-    Extensions:
-    if his head hits the coin, you get a point
-    Levels of diccifulty
-    Multiple charicters
-Schedule: 
-Wednesday November 16: Topic Proposal due
-Monday November 21: Charicter Design done
-Thursday November 24: Level Design done
-Monday December 1: ability to jump, move left, right done
-Interface: https://drive.google.com/drive/folders/1nxl7DG0RHgcr3iy7rT6C1_FZE9R1ZfZ3?usp=sharing
-Classes:
-    Character
-Libraries:
-    pygame
+### Description
+Basic platformer game. 
 
+### Modules used
+- PyGame
+- sys
+- os
+- csv
+- random
+
+### Controls
+- In game movement: WASD, Space
+- Menus: arrow keys, return key
+
+### Extensions
+- Shop system, the ability to purchase more lives in exchange for coins
+- Multiple characters
+- Multiple levels
+
+### First Milestone
+As of Tuesday, 11/29 we have a working character movement, level loading, and a start menu.
+The game includes various animations using sprite images. The level loading is done by reading a csv file containing the data for the current level which is generated using program called "Tiled". 
+The game contains a lot of essential classes which are used to make the development easier and more clear. 
+#### Classes
+- Game - main class which is responsible for running the game
+- Level - this class is used to generate the level on a screen
+- Player - player class
+- Tile - this is a parent class for other classes like StaticTile and AnimatedTile which are used to draw tiles on level
+- Sky, Clouds, Lava - basic classes for level decoration
+- Interface - class for drawing user interface on screen
+- StartMenu - class for drawing the start menu
+
+
+## Screenshots
+
+![Screenshot 1](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/1.png?token=GHSAT0AAAAAABZL74J2CEQMM3M6ZJZAKT6YY4GYOEQ)
+![Screenshot 2](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/2.png?token=GHSAT0AAAAAABZL74J335UCHEUALESWSFPWY4GYSFA)
