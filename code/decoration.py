@@ -45,18 +45,18 @@ class Clouds:
         self.cloud_sprites.update(shift)
         self.cloud_sprites.draw(surface)
 
-class Lava:
+class Water:
     def __init__(self, top, level_width):
-        lava_start = -SCREEN_WIDTH
-        lava_tile_width = 192
-        tile_x_amount = int((level_width + SCREEN_WIDTH * 2) / lava_tile_width)
-        self.lava_sprites = pygame.sprite.Group()
+        water_start = -SCREEN_WIDTH
+        water_tile_width = 192
+        tile_x_amount = int((level_width + SCREEN_WIDTH * 2) / water_tile_width)
+        self.water_sprites = pygame.sprite.Group()
 
         for tile in range(tile_x_amount):
-            x = tile * lava_tile_width + lava_start
+            x = tile * water_tile_width + water_start
             y = top
-            sprite = AnimatedTile(192, x, y, '../graphics/decoration/lava')
-            self.lava_sprites.add(sprite)
+            sprite = AnimatedTile(192, x, y, '../graphics/decoration/water')
+            self.water_sprites.add(sprite)
     def draw(self, surface, shift):
-        self.lava_sprites.update(shift)
-        self.lava_sprites.draw(surface)
+        self.water_sprites.update(shift)
+        self.water_sprites.draw(surface)

@@ -3,7 +3,7 @@ from support import import_folder
 from math import sin
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, surface):
+    def __init__(self, pos, surface, create_jump_particles):
         super().__init__()
         self.import_character_assets()
         self.frame_index = 0
@@ -16,7 +16,8 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.8
         self.jump_speed = -16
         self.collision_rect = pygame.Rect(self.rect.topleft, (50, self.rect.height))
-
+        self.display_surface = surface
+        self.create_jump_particles = create_jump_particles
         self.status = 'idle'
         self.facing_right = True
         self.on_ground = False
@@ -30,7 +31,8 @@ class Player(pygame.sprite.Sprite):
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
-    
+    def import_dust_run_particles(self):
+        self.dust_run_particles = import_folder('../graphics/character/dust_particles/run')
     def animate(self):
         animation = self.animations[self.status]
         self.frame_index += self.animation_speed
@@ -61,6 +63,8 @@ class Player(pygame.sprite.Sprite):
         
         if keys[pygame.K_SPACE] and self.on_ground:
             self.jump()
+            self.create_jump_particles(self.rect.midbottom)
+
     
     def get_status(self):
         if self.direction.y < 0:

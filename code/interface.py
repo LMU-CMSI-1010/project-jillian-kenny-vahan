@@ -3,13 +3,19 @@ import pygame
 class Interface:
     def __init__(self, surface):
         self.display_surface = surface
-        self.hearts_start_position = [10, 19]
-        self.heart_size = 64
-        self.heart = pygame.image.load('../graphics/interface/HeatFull.png').convert_alpha()
-
+        self.hearts_start_position_y = 19
+        self.heart_size = 40
+        self.heart = pygame.transform.scale(pygame.image.load('../graphics/interface/heart.png').convert_alpha(), (self.heart_size, self.heart_size))
+        self.coin = pygame.image.load('../graphics/interface/coin.png').convert_alpha()
+        self.coin_rect = self.coin.get_rect(topleft = (20,65))
+        self.font = pygame.font.Font('../font/FutilePro.ttf',30)
     def show_hearts(self, amount):
-        heart_pos = self.hearts_start_position
         for i in range(amount):
-            heart_rect = self.heart.get_rect(topleft = heart_pos)
+            heart_rect = self.heart.get_rect(topleft = [(self.heart_size * 1.2 * i) + 15, self.hearts_start_position_y])
             self.display_surface.blit(self.heart, heart_rect)
-            heart_pos[0] = self.heart_size * i + 15 
+
+    def show_coins(self,amount):
+        self.display_surface.blit(self.coin,self.coin_rect)
+        coin_amount_surf = self.font.render(str(amount),False,'#33323d')
+        coin_amount_rect = coin_amount_surf.get_rect(midleft = (self.coin_rect.right + 4,self.coin_rect.centery))
+        self.display_surface.blit(coin_amount_surf,coin_amount_rect)
