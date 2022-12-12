@@ -41,6 +41,9 @@ The game contains a lot of essential classes which are used to make the developm
 - Interface - class for drawing user interface on screen
 - StartMenu - class for drawing the start menu
 
+## User's Manual
+To run the code you have to first clone the repository to your local computer and navigate to the code folder. After navigating to the folder you should run the main.py file using the command: python3 main.py.
+
 
 ## Screenshots
 
