@@ -47,5 +47,5 @@ To run the code you have to first clone the repository to your local computer an
 
 ## Screenshots
 
-![Screenshot 1](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/1.png?token=GHSAT0AAAAAABZL74J2CEQMM3M6ZJZAKT6YY4GYOEQ)
-![Screenshot 2](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/2.png?token=GHSAT0AAAAAABZL74J335UCHEUALESWSFPWY4GYSFA)
+![Screenshot 1](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/1.png?token=GHSAT0AAAAAABZL74J2YFC3DZULCLURDZY4Y4XSSTA)
+![Screenshot 2](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/2.png?token=GHSAT0AAAAAABZL74J2ILQFWET6VVYEZ3WKY4XSSZA)
