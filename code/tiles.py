@@ -1,6 +1,7 @@
 import pygame
 from support import import_folder
 
+# Parent class for all the tiles
 class Tile(pygame.sprite.Sprite):
     def __init__(self, size, x, y):
         super().__init__()
@@ -10,11 +11,13 @@ class Tile(pygame.sprite.Sprite):
     def update(self, shift):
         self.rect.x += shift
 
+# Static tile without any animation
 class StaticTile(Tile):
     def __init__(self, size, x, y, surface):
         super().__init__(size, x, y)
         self.image = surface
 
+# Tile with animation
 class AnimatedTile(Tile):
     def __init__(self, size, x, y, path):
         super().__init__(size, x, y)
@@ -34,6 +37,7 @@ class AnimatedTile(Tile):
         self.animate()
         self.rect.x += shift
 
+# Coin tile
 class Coin(AnimatedTile):
 	def __init__(self,size,x,y,path):
 		super().__init__(size,x,y,path)

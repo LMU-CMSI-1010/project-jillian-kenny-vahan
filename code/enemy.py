@@ -2,6 +2,7 @@ import pygame
 from tiles import AnimatedTile
 from random import randint
 
+# Initializing Enemy with AnimatedTile as parent
 class Enemy(AnimatedTile):
     def __init__(self, size, x, y):
         super().__init__(size, x, y, '../graphics/enemy/run')

@@ -4,6 +4,11 @@ from tiles import StaticTile, AnimatedTile
 from support import import_folder
 from random import choice, randint
 
+'''
+    Decoration file with classes.
+'''
+
+# Sky class, used to generate and render sky in the level
 class Sky:
     def __init__(self, horizon):
         self.top = pygame.image.load('../graphics/decoration/sky/sky_top_2.png').convert()
@@ -25,6 +30,7 @@ class Sky:
             else:
                 surface.blit(self.bottom, (0,y))
 
+# Clouds class, used to generate and render clouds in the level
 class Clouds:
     def __init__(self, horizon, level_width, cloud_number):
         cloud_surf_list = import_folder('../graphics/decoration/clouds')
@@ -45,6 +51,7 @@ class Clouds:
         self.cloud_sprites.update(shift)
         self.cloud_sprites.draw(surface)
 
+# Water class, used to generate and render water in the level
 class Water:
     def __init__(self, top, level_width):
         water_start = -SCREEN_WIDTH

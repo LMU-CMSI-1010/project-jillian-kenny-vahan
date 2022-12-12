@@ -7,6 +7,13 @@ from decoration import Sky, Clouds, Water
 from game_data import levels
 from enemy import Enemy
 from particles import ParticleEffect
+
+'''
+    Level file where all the level generation happens
+'''
+
+
+# Class to render the level
 class Level:
     def __init__(self, current_level, surface, create_level, change_lives, change_status, max_level, change_coins):
         # Basic Setup
@@ -44,6 +51,7 @@ class Level:
         
         # Enemies
         self.explosion_sprites = pygame.sprite.Group()
+        self.enemy_death_sound = pygame.mixer.Sound('../audio/enemy_death.wav')
         if self.enemies_exist:
             enemy_layout = import_csv_layout(level_data['enemies'])
             self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
@@ -55,7 +63,7 @@ class Level:
         self.coin_sprites = self.create_tile_group(coin_layout, 'coins')
         self.coin_sound = pygame.mixer.Sound('../audio/coin.wav')
 
-
+    # Reading tile data from level files
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
 
@@ -78,7 +86,7 @@ class Level:
                         sprite = Tile(TILE_SIZE, x, y)
                     sprite_group.add(sprite)
         return sprite_group
-    
+    # Setup of the player
     def player_setup(self, layout):
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
@@ -92,6 +100,7 @@ class Level:
                     sprite = StaticTile(TILE_SIZE, x, y, trophy_surface)
                     self.goal.add(sprite)
 
+    # Creating Jump Particles
     def create_jump_particles(self,pos):
         if self.player.sprite.facing_right:
             pos -= pygame.math.Vector2(10,5)
@@ -100,17 +109,20 @@ class Level:
         jump_particle_sprite = ParticleEffect(pos,'jump')
         self.dust_sprite.add(jump_particle_sprite)
 
+    # Checking if player is on ground
     def get_player_on_ground(self):
         if self.player.sprite.on_ground:
             self.player_on_ground = True
         else:
             self.player_on_ground = False
 
+    # Checking if enemy hit the constraint and reversing the enemy for it to not fall of the map
     def enemy_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
             if pygame.sprite.spritecollide(enemy,self.constraints_sprites,False):
                 enemy.reverse()
 
+    # Checking collision with enemies
     def check_enemy_collisions(self):
         enemy_collisions = pygame.sprite.spritecollide(self.player.sprite,self.enemy_sprites,False)
 
@@ -123,18 +135,19 @@ class Level:
                     self.player.sprite.direction.y = -15
                     explosion_sprite = ParticleEffect(enemy.rect.center,'explosion')
                     self.explosion_sprites.add(explosion_sprite)
+                    self.enemy_death_sound.play()
                     enemy.kill()
                 else:
                     self.change_lives()
                     self.create_level(self.max_level)
-
+    # Checking collision with coins
     def check_coin_collisions(self):
         collided_coins = pygame.sprite.spritecollide(self.player.sprite,self.coin_sprites,True)
         if collided_coins:
             self.coin_sound.play()
             for coin in collided_coins:
                 self.change_coins(coin.value)
-
+    # Checking horizontal collision of the plyaer with collidable sprites
     def horizontal_movement_collision(self):
         player = self.player.sprite
         player.collision_rect.x += player.direction.x * player.speed
@@ -149,7 +162,8 @@ class Level:
                     player.collision_rect.right = sprite.rect.left
                     player.on_right = True
                     self.current_x = player.rect.right
-
+    
+    # Checking vertical collision of the plyaer with collidable sprites
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
@@ -168,13 +182,14 @@ class Level:
             
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
-    
+
+    # Checking death
     def check_death(self):
         if self.player.sprite.rect.top > SCREEN_HEIGHT:
             self.change_lives()
             self.create_level(self.max_level)
 
-
+    # Shifting the world for the player to not go off the screen
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
@@ -189,23 +204,8 @@ class Level:
         else:
             self.world_shift = 0
             player.speed = 8
-    
-    def get_player_on_ground(self):
-        if self.player.sprite.on_ground:
-            self.player_on_ground = True
-        else:
-            self.player_on_ground = False
 
-    def create_landing_dust(self):
-        if not self.player_on_ground and self.player.sprite.on_ground and not self.dust_sprite.sprites():
-            if self.player.sprite.facing_right:
-                offset = pygame.math.Vector2(10,15)
-            else:
-                offset = pygame.math.Vector2(-10,15)
-            fall_dust_particle = ParticleEffect(self.player.sprite.rect.midbottom - offset,'land')
-            self.dust_sprite.add(fall_dust_particle)
-
-
+    # Checking win
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.change_status('winscreen')
@@ -232,7 +232,6 @@ class Level:
         self.horizontal_movement_collision()
         self.check_coin_collisions()
         self.get_player_on_ground()
-        self.create_landing_dust()
         self.vertical_movement_collision()
         self.scroll_x()
         self.player.draw(self.display_surface)

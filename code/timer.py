@@ -1,5 +1,5 @@
 import pygame
-
+# Timer class for handling intervals in game
 class Timer:
     def __init__(self, duration, func = None):
         self.duration = duration

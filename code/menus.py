@@ -3,13 +3,20 @@ from settings import *
 from timer import Timer
 import sys
 from settings import SCREEN_HEIGHT, SCREEN_WIDTH
+
+'''
+    Menus file where all the menu classes are stored.
+'''
+# StartMenu class for rendering the start menu in the beginning of the game
 class StartMenu:
     def __init__(self, toggle_menu, set_level):
+        # Basic setup
         self.toggle_menu = toggle_menu
         self.set_level = set_level
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font('../font/FutilePro.ttf', 30)
         self.title = pygame.font.Font('../font/FutilePro.ttf', 90)
+        self.subtitle = pygame.font.Font('../font/FutilePro.ttf', 20)
         self.bg = pygame.image.load('../graphics/background/back.png').convert_alpha()
         self.width = 400
         self.space = 10
@@ -23,7 +30,7 @@ class StartMenu:
         self.set_level(1)
         self.text_surfs = []
         self.total_height = 0
-
+        # Getting the options for the start menu and preparing the font to be rendered
         for item in self.options:
             text_surf = self.font.render(item, False, 'Black')
             self.text_surfs.append(text_surf)
@@ -32,6 +39,7 @@ class StartMenu:
         self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
         self.main_rect = pygame.Rect(SCREEN_WIDTH / 2 - self.width / 2, self.menu_top, self.width, self.total_height)
 
+    # Checking keyboard input
     def input(self):
         keys = pygame.key.get_pressed()
         self.timer.update()
@@ -55,7 +63,7 @@ class StartMenu:
             self.index = len(self.options) - 1
         if self.index > len(self.options) - 1:
             self.index = 0
-
+    # Function to render the screen
     def show_entry(self, text_surf, top, selected):
         bg_rect = pygame.Rect(self.main_rect.left, top, self.width, text_surf.get_height() + (self.padding * 2))
         pygame.draw.rect(self.display_surface, 'White', bg_rect, 0, 4)
@@ -64,7 +72,7 @@ class StartMenu:
 
         if selected:
             pygame.draw.rect(self.display_surface, 'black', bg_rect, 4, 4)
-
+    # Rendering
     def update(self):
         self.input()
         self.display_surface.blit(self.bg, (0,0))
@@ -74,9 +82,14 @@ class StartMenu:
         for text_index, text_surf in enumerate(self.text_surfs):
             top = self.main_rect.top + text_index * (text_surf.get_height() + (self.padding * 2) + self.space)
             self.show_entry(text_surf, top, self.index == text_index)
+        text = self.subtitle.render("Use arrow keys and return", True, 'white')
+        text_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 20))
+        self.display_surface.blit(text, text_rect)
 
+# WinScreen class for rendering the win menu after beating every level
 class WinScreen:
     def __init__(self, toggle_menu):
+        # Basic setup
         self.toggle_menu = toggle_menu
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font('../font/FutilePro.ttf', 30)
@@ -92,7 +105,7 @@ class WinScreen:
     def setup(self):
         self.text_surfs = []
         self.total_height = 0
-
+        # Preparing fonts
         for item in self.options:
             text_surf = self.font.render(item, False, 'Black')
             self.text_surfs.append(text_surf)
@@ -101,6 +114,7 @@ class WinScreen:
         self.menu_top = SCREEN_HEIGHT / 2 - self.total_height / 2
         self.main_rect = pygame.Rect(SCREEN_WIDTH / 2 - self.width / 2, self.menu_top, self.width, self.total_height)
 
+    # Checking keyboard input
     def input(self):
         keys = pygame.key.get_pressed()
         self.timer.update()
@@ -123,7 +137,7 @@ class WinScreen:
             self.index = len(self.options) - 1
         if self.index > len(self.options) - 1:
             self.index = 0
-
+    # Preparing buttons for rendering
     def show_entry(self, text_surf, top, selected):
         bg_rect = pygame.Rect(self.main_rect.left, top, self.width, text_surf.get_height() + (self.padding * 2))
         pygame.draw.rect(self.display_surface, 'White', bg_rect, 0, 4)
@@ -133,6 +147,7 @@ class WinScreen:
         if selected:
             pygame.draw.rect(self.display_surface, 'black', bg_rect, 4, 4)
 
+    # Rendering
     def update(self):
         self.input()
         self.display_surface.blit(self.bg, (0,0))
@@ -143,9 +158,10 @@ class WinScreen:
             top = self.main_rect.top + text_index * (text_surf.get_height() + (self.padding * 2) + self.space)
             self.show_entry(text_surf, top, self.index == text_index)
 
-
+# Game over screen
 class GameOver:
     def __init__(self, change_status, set_level):
+        # Basic setup
         self.display_surface = pygame.display.get_surface()
         self.change_status = change_status
         self.set_level = set_level
@@ -154,18 +170,22 @@ class GameOver:
     def setup(self):
         self.timer = Timer(3000, self.back_to_menu)
         self.timer.activate()
-
+    # Going back to menu after the timer is finished
     def back_to_menu(self):
         self.set_level(1)
         self.change_status('mainmenu')
+    # Rendering
     def run(self):
         text = self.font.render("Game over!", True, 'white')
         text_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.display_surface.blit(text, text_rect)
         self.timer.update()
 
+
+# Victory screen which is being shown after the game is won
 class GameFinished:
     def __init__(self, change_status, set_level):
+        # Basic setup
         self.display_surface = pygame.display.get_surface()
         self.change_status = change_status
         self.set_level = set_level
@@ -176,10 +196,11 @@ class GameFinished:
         self.timer = Timer(3000, self.back_to_menu)
         self.timer.activate()
 
+    # Going back to menu after the timer is finished
     def back_to_menu(self):
         self.set_level(1)
         self.change_status('mainmenu')
-
+    # Rendering
     def run(self):
         self.display_surface.blit(self.bg, (0,0))
         text = self.font.render("Victory!", True, 'white')

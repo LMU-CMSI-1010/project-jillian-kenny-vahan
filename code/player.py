@@ -2,8 +2,10 @@ import pygame
 from support import import_folder
 from math import sin
 
+# Player class for the game
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, surface, create_jump_particles):
+        # Basic setup
         super().__init__()
         self.import_character_assets()
         self.frame_index = 0
@@ -24,15 +26,15 @@ class Player(pygame.sprite.Sprite):
         self.on_ceiling = False
         self.on_left = False
         self.on_right = False
-
+    # Importing the character sprites from folder and defining animations
     def import_character_assets(self):
         character_path = '../graphics/character/'
         self.animations = {'idle':[], 'run':[], 'jump':[], 'fall':[]}
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
-    def import_dust_run_particles(self):
-        self.dust_run_particles = import_folder('../graphics/character/dust_particles/run')
+
+    # Changing sprites according to the frames
     def animate(self):
         animation = self.animations[self.status]
         self.frame_index += self.animation_speed
@@ -48,7 +50,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottomright = self.collision_rect.bottomright
 
         self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
-    
+    # Getting keyboard input
     def get_input(self):
         keys = pygame.key.get_pressed()
 
@@ -65,7 +67,7 @@ class Player(pygame.sprite.Sprite):
             self.jump()
             self.create_jump_particles(self.rect.midbottom)
 
-    
+    # Getting the status of the player
     def get_status(self):
         if self.direction.y < 0:
             self.status = 'jump'
@@ -76,14 +78,14 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'run'
             else:
                 self.status = 'idle'
-    
+    # Applying gravity
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.collision_rect.y += self.direction.y
-    
+    # Applying jump
     def jump(self):
         self.direction.y = self.jump_speed
-    
+    # Updating the player
     def update(self):
         self.get_input()
         self.get_status()
