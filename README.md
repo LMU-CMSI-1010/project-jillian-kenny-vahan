@@ -51,6 +51,6 @@ To run the code you have to first clone the repository to your local computer an
 ![Screenshot 2](https://raw.githubusercontent.com/LMU-CMSI-1010/project-jillian-kenny-vahan/main/screenshots/2.png?token=GHSAT0AAAAAABZL74J2ILQFWET6VVYEZ3WKY4XSSZA)
 
 ## Work Divison
-Jillian- menus.py, font, support.py
+Jillian- menus.py, font
 Kenny- main.py,graphics,timer.py
-Vahan-level.py, settings.py,tiles.py
+Vahan-level.py, settings.py,tiles.py, support.py
